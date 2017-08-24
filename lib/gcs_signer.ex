@@ -3,18 +3,18 @@ defmodule GcsSigner do
   Documentation for GcsSigner.
   """
 
+  @base_url "https://storage.googleapis.com"
+
   @doc """
-  Hello world.
+  Generates signed url.
 
   ## Examples
 
-      iex> GcsSigner.sign_url("my-bucket", "my-object.mp4", expires: 1503599316)
+      iex> client = GcsSigner.Client.from_keyfile("{...}")
+      iex> GcsSigner.sign_url(client, "my-bucket", "my-object.mp4", expires: 1503599316)
       "https://storage.googleapis.com/my-bucket/my-object.mp4?Expires=15..."
 
   """
-
-  @base_url "https://storage.googleapis.com"
-
   def sign_url(client, bucket, key, opts \\ []) do
     verb = opts[:verb] || "GET"
     md5_digest = opts[:md5_digest] || ""
@@ -35,6 +35,15 @@ defmodule GcsSigner do
     Enum.join([url, "?", qs])
   end
 
+  @doc """
+  Calculate future timestamp from given hour offset.
+
+  ## Examples
+
+      iex> 10 |> GcsSigner.hours_after
+      1503599316
+
+  """
   def hours_after(hour) do
     DateTime.utc_now() |> DateTime.to_unix() |> Kernel.+(hour * 3600)
   end
@@ -50,7 +59,7 @@ defmodule GcsSigner do
   # Derive private key from Google Cloud Service Account
   # Idea for this code is mostly from this GitHub issue:
   # https://github.com/potatosalad/erlang-jose/issues/13#issuecomment-160718744
-  def get_private_key(client) do
+  defp get_private_key(client) do
     client.private_key
     |> :public_key.pem_decode
     |> (fn [x] -> x end).()

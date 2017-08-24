@@ -4,7 +4,9 @@ defmodule GcsSigner.Mixfile do
   def project do
     [
       app: :gcs_signer,
-      version: "0.1.0",
+      description: "Simple signed URL generator for Google Cloud Storage",
+      package: package(),
+      version: "0.1.1",
       elixir: "~> 1.5",
       start_permanent: Mix.env == :prod,
       deps: deps()
@@ -20,6 +22,12 @@ defmodule GcsSigner.Mixfile do
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
-    []
+    [{:ex_doc, ">= 0.0.0", only: :dev}]
+  end
+
+  defp package do
+    [maintainers: ["Minku Lee"],
+     licenses: ["MIT"],
+     links: %{"GitHub" => "https://github.com/shakrmedia/gcs-signer-elixir"}]
   end
 end
