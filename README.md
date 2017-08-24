@@ -15,7 +15,7 @@ by adding `gcs_signer` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:gcs_signer, "~> 0.1.0"}
+    {:gcs_signer, "~> 0.1.1"}
   ]
 end
 ```
