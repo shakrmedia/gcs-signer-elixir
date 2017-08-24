@@ -61,6 +61,7 @@ defmodule GcsSigner do
   end
 
   defp service_account_json do
-    Poison.decode! json_str # TODO: get json_str
+    Application.get_env(:gcs_signer, :google_cloud_keyfile_json)
+    |> Poision.decode!
   end
 end
