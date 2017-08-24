@@ -29,7 +29,11 @@ client = GcsSigner.Client.from_keyfile(json)
 GcsSigner.sign_url(client, "my-bucket", "my-object")
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/gcs_signer](https://hexdocs.pm/gcs_signer).
+## Links
 
+* [Ruby version of gcs-signer](https://github.com/shakrmedia/gcs-signer)
+* [HexDocs](https://hexdocs.pm/gcs_signer)
+
+## License
+
+gcs-signer-elixir is distributed under the MIT License.
