@@ -5,6 +5,13 @@ defmodule GcsSigner do
 
   @base_url "https://storage.googleapis.com"
 
+  @type sign_url_opts :: [
+    verb: String.t,
+    md5_digest: String.t,
+    content_type: String.t,
+    expires: integer
+  ]
+
   @doc """
   Generates signed url.
 
@@ -15,6 +22,12 @@ defmodule GcsSigner do
       "https://storage.googleapis.com/my-bucket/my-object.mp4?Expires=15..."
 
   """
+  @spec sign_url(
+    %{client_email: String.t, private_key: String.t},
+    String.t,
+    String.t,
+    sign_url_opts
+  ) :: String.t
   def sign_url(client, bucket, key, opts \\ []) do
     verb = opts[:verb] || "GET"
     md5_digest = opts[:md5_digest] || ""

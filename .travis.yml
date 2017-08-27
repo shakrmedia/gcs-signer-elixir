@@ -2,6 +2,15 @@ sudo: false
 dist: trusty
 language: elixir
 
+env:
+  - MIX_ENV=test
+
+cache:
+  directories:
+    - $HOME/.mix
+    - deps
+    - _build
+
 elixir: 
   - 1.5.1
 
@@ -10,3 +19,4 @@ otp_release:
 
 script:
   - mix credo --strict
+  - mix dialyzer
