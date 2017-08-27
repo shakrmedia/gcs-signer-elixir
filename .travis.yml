@@ -2,9 +2,13 @@ sudo: false
 dist: trusty
 language: elixir
 
+env:
+  - MIX_ENV=test
+
 cache:
   directories:
     - $HOME/.mix
+    - _build/test/dialyxir_erlang-20.0.1_elixir-1.5.1_deps-dev.plt 
 
 elixir: 
   - 1.5.1
