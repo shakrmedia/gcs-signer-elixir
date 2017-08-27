@@ -1,0 +1,12 @@
+sudo: false
+dist: trusty
+language: elixir
+
+elixir: 
+  - 1.5.1
+
+otp_release:
+  - 20.0
+
+script:
+  - mix credo --strict
