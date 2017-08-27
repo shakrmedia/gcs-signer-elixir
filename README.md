@@ -1,5 +1,7 @@
 # gcs-signer-elixir
 
+[![Build Status](https://travis-ci.org/shakrmedia/gcs-signer-elixir.svg?branch=master)](https://travis-ci.org/shakrmedia/gcs-signer-elixir)
+
 Simple signed URL generator for Google Cloud Storage, written in Elixir.
 
 ## Features
