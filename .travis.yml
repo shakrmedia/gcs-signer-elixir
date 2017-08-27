@@ -2,6 +2,10 @@ sudo: false
 dist: trusty
 language: elixir
 
+cache:
+  directories:
+    - $HOME/.mix
+
 elixir: 
   - 1.5.1
 
