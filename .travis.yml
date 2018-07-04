@@ -3,14 +3,17 @@ dist: trusty
 
 language: elixir
 elixir:
+  - '1.5.3'
   - '1.6.6'
 
-otp_release: '21.0.1'
+otp_release:
+  - '20.3.8'
+  - '21.0.1'
 
 matrix:
-  include:
+  exclude:
     - elixir: '1.5.3'
-      otp_release: '20.3.8'
+      otp_release: '21.0.1'
 
 env:
   - MIX_ENV=test
