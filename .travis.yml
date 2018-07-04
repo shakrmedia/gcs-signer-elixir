@@ -1,6 +1,14 @@
 sudo: false
 dist: trusty
+
 language: elixir
+elixir:
+  - '1.5.3'
+  - '1.6.6'
+
+otp_release:
+  - '21.0.1'
+  - '20.3.8'
 
 env:
   - MIX_ENV=test
@@ -11,7 +19,7 @@ cache:
     - deps
     - _build
 
-elixir: 
+elixir:
   - 1.5.1
 
 otp_release:
