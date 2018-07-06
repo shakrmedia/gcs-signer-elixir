@@ -5,6 +5,8 @@ defmodule GcsSigner do
 
   @base_url "https://storage.googleapis.com"
 
+  @otp_greater_21? :erlang.system_info(:otp_release) >= '21'
+
   @type sign_url_opts :: [
     verb: String.t,
     md5_digest: String.t,
@@ -77,7 +79,19 @@ defmodule GcsSigner do
     |> :public_key.pem_decode
     |> (fn [x] -> x end).()
     |> :public_key.pem_entry_decode
-    |> elem(3) # grab privateKey from the record tuple
-    |> (fn pk -> :public_key.der_decode(:RSAPrivateKey, pk) end).()
+    |> normalize_private_key
+  end
+
+  defp normalize_private_key(private_key) do
+    if @otp_greater_21? do
+      # From OTP 21, GCS keys are correctly decoded and do not need any
+      # extra treatment
+      private_key
+    else
+      # grab privateKey from the record tuple
+      private_key
+      |> elem(3)
+      |> (fn pk -> :public_key.der_decode(:RSAPrivateKey, pk) end).()
+    end
   end
 end
