@@ -3,7 +3,15 @@ defmodule GcsSigner.Client do
   Holds Google Cloud Service Account JSON
   """
 
-  defstruct private_key: nil, client_email: nil
+  @type t :: %__MODULE__{
+          private_key: String.t(),
+          client_email: String.t()
+        }
+
+  defstruct [
+    :private_key,
+    :client_email
+  ]
 
   @doc """
   Initialize GcsSigner.Client from given keyfile.
@@ -15,13 +23,13 @@ defmodule GcsSigner.Client do
       %GcsSigner.Client{...}
 
   """
-  def from_keyfile(%{
-    "private_key" => private_key,
-    "client_email" => client_email,
-  }) do
-    %GcsSigner.Client{
+  @spec from_keyfile(map()) :: __MODULE__.t() | :error
+  def from_keyfile(%{"private_key" => private_key, "client_email" => client_email}) do
+    %__MODULE__{
       private_key: private_key,
       client_email: client_email
     }
   end
+
+  def from_keyfile(_), do: :error
 end

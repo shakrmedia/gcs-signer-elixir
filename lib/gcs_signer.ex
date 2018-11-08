@@ -8,11 +8,11 @@ defmodule GcsSigner do
   @otp_greater_21? :erlang.system_info(:otp_release) >= '21'
 
   @type sign_url_opts :: [
-    verb: String.t,
-    md5_digest: String.t,
-    content_type: String.t,
-    expires: integer
-  ]
+          verb: String.t(),
+          md5_digest: String.t(),
+          content_type: String.t(),
+          expires: integer
+        ]
 
   @doc """
   Generates signed url.
@@ -25,11 +25,11 @@ defmodule GcsSigner do
 
   """
   @spec sign_url(
-    %{client_email: String.t, private_key: String.t},
-    String.t,
-    String.t,
-    sign_url_opts
-  ) :: String.t
+          GcsSigner.Client.t(),
+          String.t(),
+          String.t(),
+          sign_url_opts
+        ) :: String.t()
   def sign_url(client, bucket, key, opts \\ []) do
     verb = opts[:verb] || "GET"
     md5_digest = opts[:md5_digest] || ""
@@ -37,17 +37,22 @@ defmodule GcsSigner do
     expires = opts[:expires] || hours_after(1)
     resource = "/#{bucket}/#{key}"
 
-    signature = [verb, md5_digest, content_type, expires, resource]
-                |> Enum.join("\n") |> generate_signature(client)
+    signature =
+      [verb, md5_digest, content_type, expires, resource]
+      |> Enum.join("\n")
+      |> generate_signature(client)
 
     url = "#{@base_url}#{resource}"
-    qs = %{
-      "GoogleAccessId" => client.client_email,
-      "Expires" => expires,
-      "Signature" => signature
-    } |> URI.encode_query
 
-    Enum.join([url, "?", qs])
+    query_string =
+      %{
+        "GoogleAccessId" => client.client_email,
+        "Expires" => expires,
+        "Signature" => signature
+      }
+      |> URI.encode_query()
+
+    Enum.join([url, "?", query_string])
   end
 
   @doc """
@@ -68,7 +73,7 @@ defmodule GcsSigner do
 
     string
     |> :public_key.sign(:sha256, private_key)
-    |> Base.encode64
+    |> Base.encode64()
   end
 
   # Derive private key from Google Cloud Service Account
@@ -76,9 +81,9 @@ defmodule GcsSigner do
   # https://github.com/potatosalad/erlang-jose/issues/13#issuecomment-160718744
   defp get_private_key(client) do
     client.private_key
-    |> :public_key.pem_decode
+    |> :public_key.pem_decode()
     |> (fn [x] -> x end).()
-    |> :public_key.pem_entry_decode
+    |> :public_key.pem_entry_decode()
     |> normalize_private_key
   end
 
